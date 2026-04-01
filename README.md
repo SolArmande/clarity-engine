@@ -1,67 +1,81 @@
 # Clarity Engine
 
-Clarity Engine is a **task completion engine** for practical life workflows. It defines explicit, reviewable, step-by-step task contracts so a person can reach a concrete end state without ambiguity.
+Clarity Engine is a **task completion engine**. It loads structured task files, validates them against a strict schema, and runs baseline steps in a simple terminal flow.
 
-It is **not** a general advice chatbot.
+It is not a chatbot.
 
-## Current scope
+## Repository structure
 
-This repository currently contains baseline US task specifications for common workflows (for example, unemployment, banking, healthcare intake, and similar administrative tasks).
+```text
+tasks/
+  baseline/                 # canonical task files
+  state_overlays/           # optional state-specific overlays
+    <state_code>/
+      <task>.md
+  institution_overlays/     # optional institution-specific overlays
+    <institution_name>/
+      <task>.md
+engine/
+  task_engine.py            # task discovery + loading logic
+  validator.py              # strict schema validation
+  cli.py                    # CLI commands (validate, run)
+```
 
-The current focus is:
-- Clear execution over broad coverage.
-- Rigid structure over free-form prose.
-- Reviewable quality constraints over ad hoc writing.
+## Normalized task discovery
 
-## Task completion model
+Task discovery is baseline-first:
 
-Every task should:
-- Use a rigid markdown schema (`engine/schema.md`).
-- Pass quality rules and review rubric (`engine/rules.md`).
-- Be executable by a novice under stress.
+- Baseline task files are discovered only from `tasks/baseline/*.md`.
+- Optional overlays are discovered only when requested with flags.
+- Missing overlay files are handled explicitly and never merged silently.
 
-## File structure
+## Validation
 
-- `engine/schema.md` — required task-file contract and section semantics.
-- `engine/rules.md` — writing/review quality rules and rubric.
-- `*.md` (repo root, current phase) — baseline task files.
+Use validator mode to catch malformed task files quickly.
 
-Planned structure as scope expands:
+```bash
+python -m engine validate
+python -m engine validate unemployment
+python -m engine validate unemployment --state ca --institution acme_bank
+```
 
-- `tasks/` — baseline task specs.
-- `tasks/state_overlays/` — state-specific variants, e.g.:
-  - `tasks/state_overlays/or_unemployment.md`
-  - `tasks/state_overlays/ca_unemployment.md`
-- `tasks/institution_overlays/` — institution-specific variants.
+Validation guarantees:
 
-## Baseline vs overlays (important)
+- First heading must be `# TASK: <name>`.
+- Required sections must exist and be non-empty.
+- `## STEPS` must contain sequential numbered steps.
+- Errors are explicit and include file paths.
 
-To prevent drift and duplication, task content should be split into layers:
+## Overlay strategy
 
-1. **Federal/general baseline**
-   - Reusable core steps and constraints.
-2. **State-specific overlays**
-   - Only state-dependent differences.
-3. **Institution-specific variants**
-   - Employer, school, hospital, or program-specific deviations.
+Overlays are optional and append-only.
 
-Core files should remain baseline-first; overlays capture divergence.
+- Baseline content remains distinct.
+- State and institution overlays are loaded only if corresponding files exist.
+- Overlays are clearly labeled when composed in engine output.
+- No silent baseline/overlay claim mixing.
 
-## Contribution standard
+Naming conventions:
 
-When contributing:
-1. Keep Clarity Engine framed as a task completion system.
-2. Follow the schema exactly.
-3. Enforce non-vague, atomic steps.
-4. Avoid unlabeled state-specific claims in baseline files.
-5. Ensure review checklist pass in `engine/rules.md`.
+- State overlays: `tasks/state_overlays/<state_code>/<task>.md` (e.g. `ca/unemployment.md`)
+- Institution overlays: `tasks/institution_overlays/<institution_name>/<task>.md`
 
-## Expansion roadmap
+## Run mode
 
-Near-term:
-1. Normalize existing tasks to full schema compliance.
-2. Introduce state overlay folder and first overlays.
-3. Add institution overlay patterns.
-4. Build a minimal CLI to list tasks and render a clean execution view.
+Run mode provides a standard-library-only step-by-step terminal flow:
 
-The next implementation milestone after documentation is a small interface (CLI-first) to keep the engine testable and deterministic.
+```bash
+python -m engine run unemployment
+python -m engine run unemployment --state ca
+python -m engine run unemployment --state ca --institution acme_bank
+```
+
+Behavior:
+
+- Loads and validates the baseline task first.
+- Reports whether requested overlays are found.
+- Walks through baseline steps interactively, one step at a time.
+
+## No external dependencies
+
+Clarity Engine uses only Python standard library modules.
