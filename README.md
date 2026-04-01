@@ -1,7 +1,6 @@
 # Clarity Engine
 
-Clarity Engine is a **task completion engine**. It loads structured task files, validates them against a strict schema, and runs baseline steps in a simple terminal flow.
-
+Clarity Engine is a mobile-first guided completion system for high-friction public-service tasks, with an embedded reality layer that helps users decide and prepare before acting.
 It is not a chatbot.
 
 ## Repository structure
