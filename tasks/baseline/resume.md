@@ -1,63 +1,58 @@
-# TASK: Create a resume from scratch
+# TASK: Build and export a basic resume on the web
 
 ## OUTCOME
 
-You have a one-page resume saved as PDF and ready to submit.
+You complete a one-page resume directly in the web flow and save it as a PDF from your browser.
 
 ## REQUIREMENTS
 
-- List of target job titles.
-- Work history with dates.
-- Education history with dates.
-- List of relevant skills.
-- Email address and phone number.
-- Word processor or resume builder.
+- Phone or computer with a modern web browser.
+- Full name.
+- Phone number.
+- Email address.
+- City and state.
+- 3 to 5 relevant skills.
+- 1 to 3 experience entries.
+- Education details.
 
 ## STEPS
 
-1. Open a blank document.
-2. Set page margins to 1 inch.
-3. Set font to Arial, Calibri, or Times New Roman.
-4. Set body font size to 11 or 12.
-5. Add your full name at the top.
-6. Add your phone number under your name.
-7. Add your professional email under your name.
-8. Add your city and state under your name.
-9. Add a section title named Summary.
-10. Write a 2-line summary matching your target job title.
-11. Add a section title named Skills.
-12. List 6 to 10 skills relevant to the target job.
-13. Add a section title named Experience.
-14. Add your most recent job first.
-15. Add company name, job title, city, state, and dates for that job.
-16. Add 3 to 5 bullet points describing results for that job.
-17. Repeat job entry steps for older jobs.
-18. Add a section title named Education.
-19. Add school name, credential, city, state, and graduation year.
-20. Remove personal pronouns from all bullet points.
-21. Check each bullet starts with an action verb.
-22. Run spell check.
-23. Save the file as .docx.
-24. Export the file as PDF.
-25. Name the PDF as FirstName_LastName_Resume.pdf.
+1. Open the Clarity Engine static site in your browser.
+2. Select the `resume` task from the Task dropdown.
+3. Enter your full name.
+4. Enter your phone number.
+5. Enter your email address.
+6. Enter your city and state.
+7. Enter at least 3 and up to 5 skills in the Skills fields.
+8. Add your first experience entry with job title, company and dates, city/state, and at least one bullet point.
+9. Use preset bullet starter lines when useful, then edit them to match your work.
+10. Add up to 2 more experience entries if they strengthen your resume.
+11. Enter your education details.
+12. Review the live resume preview on the same page.
+13. Confirm the preview is readable and one-page oriented.
+14. Tap or click the Print / Save as PDF button.
+15. In the browser print dialog, select Save as PDF or Print.
+16. On mobile, use your browser Share or Print action if needed to reach Save as PDF.
+17. Save the file with a clear name such as FirstName_LastName_Resume.pdf.
 
 ## DECISIONS
 
-- IF you have no work history → THEN create a Projects section and add 2 to 4 relevant projects.
-- IF you have more than 10 years of experience → THEN include only the most relevant 10 years.
-- IF a job application asks for a specific resume format → THEN use that format before submitting.
+- IF you have no prior paid job experience → THEN add school, volunteer, or project experience as your 1 entry.
+- IF you have more than 3 past jobs → THEN include only the 1 to 3 entries most relevant to your target role.
+- IF your resume is longer than one page in preview/print → THEN shorten bullet points and remove less relevant details.
 
 ## FAILURE POINTS
 
-- Using an unprofessional email address.
-- Including irrelevant job history.
-- Using paragraphs instead of bullet points in Experience.
-- Saving only as .docx and not as PDF.
-- Submitting a resume with spelling errors.
+- Entering fewer than 3 skills.
+- Leaving out contact details.
+- Copying starter bullet points without editing them for your actual work.
+- Skipping the preview check before export.
+- Forgetting to save as PDF from the browser print flow.
 
 ## COMPLETION CHECK
 
-- Resume is one page.
-- Resume includes Summary, Skills, Experience, and Education.
-- Resume is saved as PDF.
-- File name follows FirstName_LastName_Resume.pdf format.
+- Resume includes name, phone, email, and city/state.
+- Resume includes 3 to 5 skills.
+- Resume includes 1 to 3 experience entries.
+- Resume includes education details.
+- Resume is saved as a PDF from the web flow.
