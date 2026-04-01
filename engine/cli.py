@@ -7,6 +7,7 @@ from pathlib import Path
 import sys
 
 from engine.task_engine import TaskEngine, extract_numbered_steps
+from engine.static_site import generate_static_site
 from engine.validator import TaskValidationError
 
 
@@ -33,6 +34,9 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("task", help="Task name to run.")
     run.add_argument("--state", help="Optional state overlay code (e.g. ca, ny).")
     run.add_argument("--institution", help="Optional institution overlay name.")
+
+    build_site = subparsers.add_parser("build-site", help="Generate static HTML task guide site.")
+    build_site.add_argument("--output", default="site", help="Output directory for generated site (default: site).")
 
     return parser
 
@@ -119,6 +123,13 @@ def cmd_run(engine: TaskEngine, task: str, state: str | None, institution: str |
     return 0
 
 
+def cmd_build_site(engine: TaskEngine, output: str) -> int:
+    output_dir = engine.root / output
+    out_file = generate_static_site(engine.root, output_dir)
+    print(f"Generated static site: {out_file}")
+    return 0
+
+
 def _wait_for_enter(prompt: str) -> bool:
     try:
         input(prompt)
@@ -141,6 +152,8 @@ def main(argv: list[str] | None = None) -> int:
             return cmd_validate(engine, args.task, args.state, args.institution)
         if args.command == "run":
             return cmd_run(engine, args.task, args.state, args.institution)
+        if args.command == "build-site":
+            return cmd_build_site(engine, args.output)
     except (FileNotFoundError, TaskValidationError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1

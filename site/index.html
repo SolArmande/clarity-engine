@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Clarity Engine Guides</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 0; background: #f7f7f9; color: #181a1f; }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 1rem; }
+    .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem; }
+    label { font-size: 0.9rem; font-weight: 600; display: block; margin-bottom: 0.2rem; }
+    select { width: 100%; font-size: 1rem; padding: 0.45rem; }
+    .panel { background: white; border-radius: 8px; padding: 1rem; box-shadow: 0 2px 10px rgba(0,0,0,.07); }
+    .section { margin-bottom: 1.2rem; }
+    .overlay-title { border-top: 1px solid #d9dce3; padding-top: 1rem; }
+    .meta { color: #596275; font-size: 0.85rem; margin-top: .2rem; }
+    h1 { font-size: 1.4rem; margin-top: 0; }
+    @media (max-width: 680px) { .controls { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Clarity Engine Task Guides</h1>
+    <p>Public static view of baseline task guides with optional state overlays.</p>
+
+    <div class="controls">
+      <div>
+        <label for="taskSelect">Task</label>
+        <select id="taskSelect"></select>
+      </div>
+      <div>
+        <label for="stateSelect">State overlay (optional)</label>
+        <select id="stateSelect"></select>
+      </div>
+    </div>
+
+    <div class="panel">
+      <section class="section">
+        <h2>Baseline</h2>
+        <div id="baselineSource" class="meta"></div>
+        <div id="baselineContent"></div>
+      </section>
+
+      <section class="section" id="overlaySection" hidden>
+        <h2 class="overlay-title">State Overlay</h2>
+        <div id="overlaySource" class="meta"></div>
+        <div id="overlayContent"></div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const DATA = {"bank_account": {"baseline_source": "tasks/baseline/bank_account.md", "baseline_html": "<h1>TASK: Open a bank account (no prior banking)</h1>\n<h2>OUTCOME</h2>\n<p>You have an active checking account with online access and a funded balance.</p>\n<h2>REQUIREMENTS</h2>\n<ul>\n<li>Government-issued photo ID.</li>\n<li>Social Security number or ITIN.</li>\n<li>Proof of address.</li>\n<li>Initial deposit amount.</li>\n<li>Phone number and email address.</li>\n<li>Access to a bank branch or online application.</li>\n</ul>\n<h2>STEPS</h2>\n<ol>\n<li>Choose 3 banks or credit unions in your area.</li>\n<li>Compare monthly fees for basic checking accounts.</li>\n<li>Compare minimum balance requirements.</li>\n<li>Compare overdraft fee policies.</li>\n<li>Compare ATM access and fees.</li>\n<li>Select one account with the lowest total fees for your usage.</li>\n<li>Start the application online or at a branch.</li>\n<li>Enter your legal name and date of birth.</li>\n<li>Enter your Social Security number or ITIN.</li>\n<li>Enter your current address.</li>\n<li>Upload or present photo ID.</li>\n<li>Upload or present proof of address.</li>\n<li>Review account terms and fee disclosures.</li>\n<li>Agree to the account terms.</li>\n<li>Fund the account with the initial deposit.</li>\n<li>Create online banking username and password.</li>\n<li>Enable two-factor authentication.</li>\n<li>Install the bank mobile app.</li>\n<li>Set up account alerts for low balance and transactions.</li>\n<li>Confirm your debit card mailing address.</li>\n<li>Activate your debit card when it arrives.</li>\n<li>Set your debit card PIN.</li>\n<li>Make one small purchase to confirm card works.</li>\n</ol>\n<h2>DECISIONS</h2>\n<ul>\n<li>IF you cannot meet minimum balance requirements \u2192 THEN choose an account with no minimum balance.</li>\n<li>IF you have no proof of address \u2192 THEN ask the bank for acceptable alternative documents.</li>\n<li>IF direct deposit is available from your employer \u2192 THEN request the bank direct deposit form and submit it to payroll.</li>\n</ul>\n<h2>FAILURE POINTS</h2>\n<ul>\n<li>Choosing an account without checking monthly fees.</li>\n<li>Missing required ID documents at application time.</li>\n<li>Not enabling transaction alerts.</li>\n<li>Forgetting to activate debit card.</li>\n<li>Triggering overdraft due to low balance.</li>\n</ul>\n<h2>COMPLETION CHECK</h2>\n<ul>\n<li>Account status is active.</li>\n<li>Initial deposit is posted.</li>\n<li>Online banking login works.</li>\n<li>Debit card is activated and tested.</li>\n<li>Alerts are enabled.</li>\n</ul>", "state_overlays": {}}, "car_accident": {"baseline_source": "tasks/baseline/car_accident.md", "baseline_html": "<h1>TASK: What to do after a minor car accident</h1>\n<h2>OUTCOME</h2>\n<p>The accident is documented, reported, and submitted to insurance with required evidence.</p>\n<h2>REQUIREMENTS</h2>\n<ul>\n<li>Driver\u2019s license.</li>\n<li>Vehicle registration.</li>\n<li>Auto insurance card.</li>\n<li>Phone camera.</li>\n<li>Pen and paper or notes app.</li>\n<li>Claim phone number or app for your insurer.</li>\n</ul>\n<h2>STEPS</h2>\n<ol>\n<li>Move your vehicle to a safe location if drivable.</li>\n<li>Turn on hazard lights.</li>\n<li>Check yourself and passengers for injuries.</li>\n<li>Call 911 if anyone is injured.</li>\n<li>Call non-emergency police line if local law requires a report.</li>\n<li>Exchange name, phone, address, and insurance details with the other driver.</li>\n<li>Record the other vehicle\u2019s license plate number.</li>\n<li>Record the other vehicle\u2019s make, model, and color.</li>\n<li>Take photos of all vehicle damage.</li>\n<li>Take photos of the full accident scene.</li>\n<li>Take photos of street signs and lane markings.</li>\n<li>Ask witnesses for name and phone number.</li>\n<li>Write down the time and location of the accident.</li>\n<li>Write down weather and road conditions.</li>\n<li>Do not discuss fault with the other driver.</li>\n<li>Notify your insurance company the same day.</li>\n<li>Submit photos and notes to your insurer.</li>\n<li>Request a claim number from your insurer.</li>\n<li>Schedule damage inspection if your insurer requires it.</li>\n<li>Save all repair estimates and receipts.</li>\n</ol>\n<h2>DECISIONS</h2>\n<ul>\n<li>IF the other driver leaves the scene \u2192 THEN call police and report a hit-and-run immediately.</li>\n<li>IF police respond \u2192 THEN request the report number before leaving.</li>\n<li>IF your car is unsafe to drive \u2192 THEN request roadside towing through insurance.</li>\n</ul>\n<h2>FAILURE POINTS</h2>\n<ul>\n<li>Leaving before exchanging information.</li>\n<li>Forgetting to photograph the scene.</li>\n<li>Admitting fault at the scene.</li>\n<li>Waiting too long to report to insurance.</li>\n<li>Losing the claim number.</li>\n</ul>\n<h2>COMPLETION CHECK</h2>\n<ul>\n<li>You have the other driver\u2019s contact and insurance details.</li>\n<li>You have photos of damage and scene.</li>\n<li>Your insurer has a filed claim.</li>\n<li>You have a claim number.</li>\n<li>You know the next inspection or repair step.</li>\n</ul>", "state_overlays": {}}, "doctor_visit": {"baseline_source": "tasks/baseline/doctor_visit.md", "baseline_html": "<h1>TASK: Prepare for a doctor visit (cost-aware)</h1>\n<h2>OUTCOME</h2>\n<p>You complete a doctor visit with known expected costs and required records.</p>\n<h2>REQUIREMENTS</h2>\n<ul>\n<li>Health insurance card (if insured).</li>\n<li>Photo ID.</li>\n<li>List of current medications and doses.</li>\n<li>List of symptoms and start dates.</li>\n<li>Preferred pharmacy name and address.</li>\n<li>Payment method.</li>\n<li>Phone or computer for scheduling.</li>\n</ul>\n<h2>STEPS</h2>\n<ol>\n<li>Identify the medical issue you need addressed.</li>\n<li>Choose primary care, urgent care, or specialist based on severity.</li>\n<li>Call the clinic to confirm they accept your insurance plan.</li>\n<li>Ask for the self-pay price if you are uninsured.</li>\n<li>Ask for the visit billing code range if available.</li>\n<li>Ask for estimated total cost including facility fees.</li>\n<li>Ask for separate lab or imaging charges.</li>\n<li>Ask whether payment plans are available.</li>\n<li>Schedule the appointment.</li>\n<li>Ask what records to bring.</li>\n<li>Request prior records be sent to the clinic if needed.</li>\n<li>Write your top 3 symptoms with start dates.</li>\n<li>Write your top 3 questions for the clinician.</li>\n<li>List all medications, supplements, and allergies.</li>\n<li>Bring insurance card and photo ID.</li>\n<li>Arrive 15 minutes early.</li>\n<li>Confirm your copay or upfront charge before check-in.</li>\n<li>Request itemized receipt before leaving.</li>\n<li>Ask when test results will be available.</li>\n<li>Check the visit summary for ordered tests and follow-ups.</li>\n<li>Review the bill when it arrives.</li>\n<li>Compare the bill to your explanation of benefits.</li>\n<li>Call billing office to dispute any incorrect charge.</li>\n</ol>\n<h2>DECISIONS</h2>\n<ul>\n<li>IF symptoms include chest pain, severe breathing trouble, or stroke signs \u2192 THEN go to the emergency department immediately.</li>\n<li>IF uninsured and cost is too high \u2192 THEN ask for community clinic or cash-discount options.</li>\n<li>IF a test is optional \u2192 THEN ask for price before approving it.</li>\n</ul>\n<h2>FAILURE POINTS</h2>\n<ul>\n<li>Not confirming insurance acceptance before scheduling.</li>\n<li>Not asking about separate lab or facility fees.</li>\n<li>Forgetting medication list.</li>\n<li>Leaving without an itemized receipt.</li>\n<li>Paying a bill without checking for errors.</li>\n</ul>\n<h2>COMPLETION CHECK</h2>\n<ul>\n<li>Appointment is completed.</li>\n<li>You received an itemized receipt.</li>\n<li>You know expected total charges.</li>\n<li>You have follow-up instructions and test timeline.</li>\n<li>Any billing errors are submitted for correction.</li>\n</ul>", "state_overlays": {}}, "resume": {"baseline_source": "tasks/baseline/resume.md", "baseline_html": "<h1>TASK: Create a resume from scratch</h1>\n<h2>OUTCOME</h2>\n<p>You have a one-page resume saved as PDF and ready to submit.</p>\n<h2>REQUIREMENTS</h2>\n<ul>\n<li>List of target job titles.</li>\n<li>Work history with dates.</li>\n<li>Education history with dates.</li>\n<li>List of relevant skills.</li>\n<li>Email address and phone number.</li>\n<li>Word processor or resume builder.</li>\n</ul>\n<h2>STEPS</h2>\n<ol>\n<li>Open a blank document.</li>\n<li>Set page margins to 1 inch.</li>\n<li>Set font to Arial, Calibri, or Times New Roman.</li>\n<li>Set body font size to 11 or 12.</li>\n<li>Add your full name at the top.</li>\n<li>Add your phone number under your name.</li>\n<li>Add your professional email under your name.</li>\n<li>Add your city and state under your name.</li>\n<li>Add a section title named Summary.</li>\n<li>Write a 2-line summary matching your target job title.</li>\n<li>Add a section title named Skills.</li>\n<li>List 6 to 10 skills relevant to the target job.</li>\n<li>Add a section title named Experience.</li>\n<li>Add your most recent job first.</li>\n<li>Add company name, job title, city, state, and dates for that job.</li>\n<li>Add 3 to 5 bullet points describing results for that job.</li>\n<li>Repeat job entry steps for older jobs.</li>\n<li>Add a section title named Education.</li>\n<li>Add school name, credential, city, state, and graduation year.</li>\n<li>Remove personal pronouns from all bullet points.</li>\n<li>Check each bullet starts with an action verb.</li>\n<li>Run spell check.</li>\n<li>Save the file as .docx.</li>\n<li>Export the file as PDF.</li>\n<li>Name the PDF as FirstName_LastName_Resume.pdf.</li>\n</ol>\n<h2>DECISIONS</h2>\n<ul>\n<li>IF you have no work history \u2192 THEN create a Projects section and add 2 to 4 relevant projects.</li>\n<li>IF you have more than 10 years of experience \u2192 THEN include only the most relevant 10 years.</li>\n<li>IF a job application asks for a specific resume format \u2192 THEN use that format before submitting.</li>\n</ul>\n<h2>FAILURE POINTS</h2>\n<ul>\n<li>Using an unprofessional email address.</li>\n<li>Including irrelevant job history.</li>\n<li>Using paragraphs instead of bullet points in Experience.</li>\n<li>Saving only as .docx and not as PDF.</li>\n<li>Submitting a resume with spelling errors.</li>\n</ul>\n<h2>COMPLETION CHECK</h2>\n<ul>\n<li>Resume is one page.</li>\n<li>Resume includes Summary, Skills, Experience, and Education.</li>\n<li>Resume is saved as PDF.</li>\n<li>File name follows FirstName_LastName_Resume.pdf format.</li>\n</ul>", "state_overlays": {}}, "unemployment": {"baseline_source": "tasks/baseline/unemployment.md", "baseline_html": "<h1>TASK: Apply for unemployment (United States)</h1>\n<h2>OUTCOME</h2>\n<p>Your unemployment claim is submitted with all required information and documents.</p>\n<h2>REQUIREMENTS</h2>\n<ul>\n<li>Social Security number.</li>\n<li>Government-issued photo ID.</li>\n<li>Mailing address and phone number.</li>\n<li>Employment history for the last 18 months.</li>\n<li>Employer names, addresses, and phone numbers for the last 18 months.</li>\n<li>Start and end dates for each job.</li>\n<li>Reason you are no longer working.</li>\n<li>Bank routing number and account number for direct deposit (optional).</li>\n<li>Work authorization document if you are not a U.S. citizen.</li>\n</ul>\n<h2>STEPS</h2>\n<ol>\n<li>Find your state unemployment agency website.</li>\n<li>Confirm the website ends in .gov.</li>\n<li>Select the option to file a new unemployment claim.</li>\n<li>Create an online account.</li>\n<li>Verify your email address.</li>\n<li>Sign in to your new account.</li>\n<li>Start a new initial claim.</li>\n<li>Enter your legal name exactly as shown on your Social Security card.</li>\n<li>Enter your Social Security number.</li>\n<li>Enter your date of birth.</li>\n<li>Enter your mailing address.</li>\n<li>Enter your phone number.</li>\n<li>Enter your employment history for the last 18 months.</li>\n<li>Enter your last employer\u2019s separation reason.</li>\n<li>Enter your last day worked.</li>\n<li>Enter your gross earnings when asked.</li>\n<li>Select direct deposit or debit card payment method.</li>\n<li>Enter bank account details if you selected direct deposit.</li>\n<li>Review every answer on the claim summary page.</li>\n<li>Submit the claim.</li>\n<li>Save the confirmation number.</li>\n<li>Download or print the confirmation page.</li>\n<li>Check your account inbox for identity verification requests.</li>\n<li>Complete any identity verification request.</li>\n<li>File weekly certification starting the first week your state allows.</li>\n</ol>\n<h2>DECISIONS</h2>\n<ul>\n<li>IF you worked in more than one state in the last 18 months \u2192 THEN file in the state where you last worked first.</li>\n<li>IF you are asked to verify identity with a third-party service \u2192 THEN complete the verification before the deadline shown.</li>\n<li>IF your claim is denied \u2192 THEN file an appeal using the denial notice instructions before the appeal deadline.</li>\n</ul>\n<h2>FAILURE POINTS</h2>\n<ul>\n<li>Entering a nickname instead of legal name.</li>\n<li>Entering incorrect employer dates.</li>\n<li>Selecting the wrong reason for separation.</li>\n<li>Missing an identity verification deadline.</li>\n<li>Not filing weekly certification after initial claim submission.</li>\n</ul>\n<h2>COMPLETION CHECK</h2>\n<ul>\n<li>You have a claim confirmation number.</li>\n<li>Your claim status shows submitted or pending in the state portal.</li>\n<li>You completed all requested identity verification steps.</li>\n<li>Your first weekly certification is filed.</li>\n</ul>", "state_overlays": {"or": {"source": "tasks/state_overlays/or/unemployment.md", "html": "<h1>TASK OVERLAY: Apply for unemployment (Oregon)</h1>\n<h2>REQUIREMENTS</h2>\n<ul>\n<li>Add to baseline requirements: Access to Oregon\u2019s Frances Online portal at https://frances.oregon.gov.</li>\n<li>Add to baseline requirements: WorkSource Oregon/iMatchSkills account information (required work registration unless you are exempt).</li>\n</ul>\n<h2>STEPS</h2>\n<ol>\n<li>Replace baseline step 1 with: Open Oregon Employment Department\u2019s unemployment portal at https://frances.oregon.gov.</li>\n<li>Replace baseline steps 3\u20137 with: In Frances Online, select **Unemployment Insurance** and submit the **initial claim** flow.</li>\n<li>Modify baseline step 23 to: Check your Frances Online message center for identity-proofing requests from Oregon.</li>\n<li>Replace baseline step 24 with: Complete Oregon\u2019s identity verification through ID.me if prompted, including identity document upload and selfie/live verification.</li>\n<li>Add after baseline step 24: Complete WorkSource Oregon registration (iMatchSkills) within the deadline shown in your Oregon claim instructions unless your notice marks you exempt.</li>\n<li>Replace baseline step 25 with: File an Oregon **weekly claim** in Frances Online for each prior claim week (Sunday through Saturday) as soon as the weekly filing window opens.</li>\n<li>Add after baseline step 25: If you miss a weekly claim, submit a **restart claim** in Frances Online before filing the next weekly claim.</li>\n</ol>\n<h2>DECISIONS</h2>\n<ul>\n<li>IF Oregon sends an ID.me verification task in Frances \u2192 THEN complete ID.me before Oregon\u2019s deadline or payment will be held.</li>\n<li>IF you are instructed to register for work search services \u2192 THEN complete WorkSource Oregon/iMatchSkills registration by the stated deadline.</li>\n<li>IF a week is missed and weekly claim filing is blocked \u2192 THEN file a restart claim first, then resume weekly claims.</li>\n</ul>\n<h2>FAILURE POINTS</h2>\n<ul>\n<li>Starting a claim on a non-Oregon site instead of Frances Online.</li>\n<li>Ignoring ID.me tasks in Frances messages.</li>\n<li>Missing the WorkSource Oregon/iMatchSkills registration deadline.</li>\n<li>Filing for the wrong claim week (Oregon weekly claims are for the prior Sunday\u2013Saturday week).</li>\n<li>Trying to file another weekly claim without submitting a required restart claim after a missed week.</li>\n</ul>"}}}};
+    const taskSelect = document.getElementById('taskSelect');
+    const stateSelect = document.getElementById('stateSelect');
+    const baselineSource = document.getElementById('baselineSource');
+    const baselineContent = document.getElementById('baselineContent');
+    const overlaySection = document.getElementById('overlaySection');
+    const overlaySource = document.getElementById('overlaySource');
+    const overlayContent = document.getElementById('overlayContent');
+
+    const tasks = Object.keys(DATA).sort();
+    for (const task of tasks) {
+      const option = document.createElement('option');
+      option.value = task;
+      option.textContent = task;
+      taskSelect.appendChild(option);
+    }
+
+    function render() {
+      const task = taskSelect.value;
+      const record = DATA[task];
+      baselineSource.textContent = `Source: ${record.baseline_source}`;
+      baselineContent.innerHTML = record.baseline_html;
+
+      const overlays = record.state_overlays;
+      stateSelect.innerHTML = '';
+
+      const noneOpt = document.createElement('option');
+      noneOpt.value = '';
+      noneOpt.textContent = 'None';
+      stateSelect.appendChild(noneOpt);
+
+      for (const stateCode of Object.keys(overlays).sort()) {
+        const option = document.createElement('option');
+        option.value = stateCode;
+        option.textContent = stateCode.toUpperCase();
+        stateSelect.appendChild(option);
+      }
+
+      updateOverlay();
+    }
+
+    function updateOverlay() {
+      const task = taskSelect.value;
+      const state = stateSelect.value;
+      const overlays = DATA[task].state_overlays;
+      const record = overlays[state];
+
+      if (!record) {
+        overlaySection.hidden = true;
+        overlaySource.textContent = '';
+        overlayContent.innerHTML = '';
+        return;
+      }
+
+      overlaySection.hidden = false;
+      overlaySource.textContent = `Source: ${record.source}`;
+      overlayContent.innerHTML = record.html;
+    }
+
+    taskSelect.addEventListener('change', render);
+    stateSelect.addEventListener('change', updateOverlay);
+
+    if (tasks.length > 0) {
+      taskSelect.value = tasks[0];
+      render();
+    }
+  </script>
+</body>
+</html>
