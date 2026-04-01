@@ -6,8 +6,8 @@ import argparse
 from pathlib import Path
 import sys
 
-from .task_engine import TaskEngine, extract_numbered_steps
-from .validator import TaskValidationError
+from engine.task_engine import TaskEngine, extract_numbered_steps
+from engine.validator import TaskValidationError
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -16,6 +16,13 @@ def build_parser() -> argparse.ArgumentParser:
         description="Clarity Engine: a task completion engine.",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
+
+    subparsers.add_parser("list", help="List available baseline task names.")
+
+    open_cmd = subparsers.add_parser("open", help="Print task markdown with optional overlays.")
+    open_cmd.add_argument("task", help="Task name to open.")
+    open_cmd.add_argument("--state", help="Optional state overlay code (e.g. ca, ny).")
+    open_cmd.add_argument("--institution", help="Optional institution overlay name.")
 
     validate = subparsers.add_parser("validate", help="Validate task file schema.")
     validate.add_argument("task", nargs="?", help="Task name to validate. If omitted, validate all baseline tasks.")
@@ -28,6 +35,23 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--institution", help="Optional institution overlay name.")
 
     return parser
+
+
+def cmd_list(engine: TaskEngine) -> int:
+    tasks = engine.discover_tasks()
+    if not tasks:
+        print("No tasks found in tasks/baseline/.")
+        return 1
+
+    for task_name in tasks:
+        print(task_name)
+    return 0
+
+
+def cmd_open(engine: TaskEngine, task: str, state: str | None, institution: str | None) -> int:
+    loaded = engine.load_task(task, state=state, institution=institution)
+    print(loaded.composed_text)
+    return 0
 
 
 def cmd_validate(engine: TaskEngine, task: str | None, state: str | None, institution: str | None) -> int:
@@ -109,6 +133,10 @@ def main(argv: list[str] | None = None) -> int:
     engine = TaskEngine(Path(__file__).resolve().parent.parent)
 
     try:
+        if args.command == "list":
+            return cmd_list(engine)
+        if args.command == "open":
+            return cmd_open(engine, args.task, args.state, args.institution)
         if args.command == "validate":
             return cmd_validate(engine, args.task, args.state, args.institution)
         if args.command == "run":
