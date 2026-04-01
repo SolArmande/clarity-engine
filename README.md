@@ -18,7 +18,8 @@ tasks/
 engine/
   task_engine.py            # task discovery + loading logic
   validator.py              # strict schema validation
-  cli.py                    # CLI commands (validate, run)
+  cli.py                    # package CLI command implementation
+cli.py                      # thin root entrypoint (developer-facing)
 ```
 
 ## Normalized task discovery
@@ -29,15 +30,29 @@ Task discovery is baseline-first:
 - Optional overlays are discovered only when requested with flags.
 - Missing overlay files are handled explicitly and never merged silently.
 
+## CLI usage
+
+Use the root-level entrypoint for the simplest developer workflow:
+
+```bash
+python cli.py list
+python cli.py open unemployment
+python cli.py validate
+python cli.py run unemployment --state or
+```
+
+You can still run the package module style if desired:
+
+```bash
+python -m engine list
+python -m engine open unemployment
+python -m engine validate unemployment --state ca --institution acme_bank
+python -m engine run unemployment --state ca
+```
+
 ## Validation
 
 Use validator mode to catch malformed task files quickly.
-
-```bash
-python -m engine validate
-python -m engine validate unemployment
-python -m engine validate unemployment --state ca --institution acme_bank
-```
 
 Validation guarantees:
 
@@ -62,13 +77,7 @@ Naming conventions:
 
 ## Run mode
 
-Run mode provides a standard-library-only step-by-step terminal flow:
-
-```bash
-python -m engine run unemployment
-python -m engine run unemployment --state ca
-python -m engine run unemployment --state ca --institution acme_bank
-```
+Run mode provides a standard-library-only step-by-step terminal flow.
 
 Behavior:
 
