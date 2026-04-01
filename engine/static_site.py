@@ -154,6 +154,10 @@ def generate_static_site(root: Path, output_dir: Path) -> Path:
     .chips {{ display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.5rem 0 0.75rem; }}
     .chip {{ width: auto; border-radius: 999px; padding: 0.35rem 0.65rem; font-size: 0.85rem; }}
     .experience-card {{ border: 1px solid #e1e5ee; border-radius: 8px; padding: 0.75rem; margin-bottom: 0.75rem; }}
+    .group-title {{ font-size: 0.82rem; font-weight: 700; color: #2f3a52; margin: 0.35rem 0 0.15rem; text-transform: capitalize; }}
+    .inline-warning {{ border: 1px solid #f4b8b8; background: #fff1f1; color: #711b1b; border-radius: 8px; padding: 0.75rem; margin-bottom: 0.9rem; }}
+    .inline-warning p {{ margin: 0 0 0.4rem; font-weight: 600; }}
+    .inline-warning ul {{ margin: 0; padding-left: 1rem; }}
     .resume-preview {{ background: #fff; border: 1px solid #d9dce3; border-radius: 8px; padding: 1rem; min-height: 320px; }}
     .resume-preview h3 {{ margin: 0 0 .2rem; font-size: 1.15rem; }}
     .preview-section {{ margin-top: 0.75rem; }}
@@ -206,6 +210,7 @@ def generate_static_site(root: Path, output_dir: Path) -> Path:
     <div class=\"panel resume-flow\" id=\"resumeFlow\" aria-live=\"polite\">
       <h2>Build your resume on this page</h2>
       <p class=\"small\">Phone-first flow: fill the fields, review the one-page preview, then use your phone browser's Share/Print action to save as PDF.</p>
+      <div id=\"resumeWarning\" class=\"inline-warning\" hidden></div>
 
       <div class=\"resume-grid\">
         <section>
@@ -225,6 +230,7 @@ def generate_static_site(root: Path, output_dir: Path) -> Path:
           <div id=\"experienceBlock\"></div>
 
           <label for=\"education\">Education</label>
+          <p class=\"small\">Add your school and graduation year if you know it.</p>
           <textarea id=\"education\" placeholder=\"Austin Community College — Associate of Applied Science, 2023, Austin, TX\"></textarea>
         </section>
 
@@ -232,7 +238,7 @@ def generate_static_site(root: Path, output_dir: Path) -> Path:
           <div class=\"resume-preview\" id=\"resumePreview\"></div>
           <div class=\"export-box\">
             <h3>Export options</h3>
-            <p class=\"small\">Print-friendly layout is built in. On mobile, tap <strong>Share</strong> or <strong>Print</strong> in your browser, then choose <strong>Save as PDF</strong>.</p>
+            <p class=\"small\">Tap <strong>Print / Save as PDF</strong> to open your browser print screen. From there, choose <strong>Print</strong> or <strong>Save as PDF</strong>.</p>
             <button id=\"printBtn\">Print / Save as PDF</button>
           </div>
         </section>
@@ -251,6 +257,8 @@ def generate_static_site(root: Path, output_dir: Path) -> Path:
     const overlayContent = document.getElementById('overlayContent');
     const guidePanel = document.getElementById('guidePanel');
     const resumeFlow = document.getElementById('resumeFlow');
+    const resumeWarning = document.getElementById('resumeWarning');
+    let exportAttempted = false;
 
     const tasks = Object.keys(DATA).sort();
     for (const task of tasks) {{
@@ -284,6 +292,10 @@ def generate_static_site(root: Path, output_dir: Path) -> Path:
       const isResumeTask = task === 'resume';
       guidePanel.style.display = isResumeTask ? 'none' : 'block';
       resumeFlow.style.display = isResumeTask ? 'grid' : 'none';
+      if (isResumeTask) {{
+        exportAttempted = false;
+        updateResumeWarning();
+      }}
 
       updateOverlay();
       if (isResumeTask) {{
@@ -310,8 +322,20 @@ def generate_static_site(root: Path, output_dir: Path) -> Path:
     }}
 
     function buildSkillInputs() {{
+      const suggestedSkills = [
+        'Communication',
+        'Teamwork',
+        'Time management',
+        'Customer service',
+        'Basic computer skills',
+        'Reliability'
+      ];
       const skillsBlock = document.getElementById('skillsBlock');
       skillsBlock.innerHTML = '<label>Skills (3 to 5)</label>';
+      const helper = document.createElement('p');
+      helper.className = 'small';
+      helper.textContent = 'Add 3 to 5 things you can do at work.';
+      skillsBlock.appendChild(helper);
       for (let i = 0; i < 5; i += 1) {{
         const input = document.createElement('input');
         input.id = `skill${{i + 1}}`;
@@ -319,17 +343,67 @@ def generate_static_site(root: Path, output_dir: Path) -> Path:
         input.addEventListener('input', renderResumePreview);
         skillsBlock.appendChild(input);
       }}
+
+      const suggestionTitle = document.createElement('p');
+      suggestionTitle.className = 'small';
+      suggestionTitle.textContent = 'Tap a skill to fill the next empty spot.';
+      skillsBlock.appendChild(suggestionTitle);
+
+      const chips = document.createElement('div');
+      chips.className = 'chips';
+      for (const skill of suggestedSkills) {{
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'secondary chip';
+        chip.textContent = skill;
+        chip.addEventListener('click', () => {{
+          for (let slot = 1; slot <= 5; slot += 1) {{
+            const input = document.getElementById(`skill${{slot}}`);
+            if (!input.value.trim()) {{
+              input.value = skill;
+              renderResumePreview();
+              return;
+            }}
+          }}
+        }});
+        chips.appendChild(chip);
+      }}
+      skillsBlock.appendChild(chips);
     }}
 
     function buildExperienceInputs() {{
-      const starters = [
-        'Assisted 40+ customers per shift while maintaining friendly service.',
-        'Reduced wait times by organizing daily task priorities.',
-        'Trained 3 new team members on standard operating procedures.',
-        'Maintained accurate records with strong attention to detail.'
-      ];
+      const groupedStarters = {{
+        'customer-facing': [
+          'Helped customers find what they needed quickly and politely.',
+          'Answered customer questions and resolved common issues.',
+        ],
+        'office/basic admin': [
+          'Entered and updated records with strong attention to detail.',
+          'Answered phones, scheduled appointments, and kept files organized.',
+        ],
+        'cleaning/maintenance': [
+          'Cleaned and restocked work areas to keep spaces safe and ready.',
+          'Followed cleaning checklists and reported repair needs early.',
+        ],
+        'warehouse/labor': [
+          'Moved, packed, and organized items safely to meet daily goals.',
+          'Checked inventory and flagged missing or damaged items.',
+        ],
+        'school/volunteer': [
+          'Supported events and team projects while meeting deadlines.',
+          'Helped peers or community members with clear and respectful communication.',
+        ],
+      }};
       const expBlock = document.getElementById('experienceBlock');
       expBlock.innerHTML = '<label>Experience (1 to 3 entries)</label>';
+      const helper = document.createElement('p');
+      helper.className = 'small';
+      helper.textContent = 'Add your most recent job, volunteer work, or school activity.';
+      expBlock.appendChild(helper);
+      const fallback = document.createElement('p');
+      fallback.className = 'small';
+      fallback.textContent = 'No formal job? Use volunteer work, school activities, caregiving, or personal projects.';
+      expBlock.appendChild(fallback);
 
       for (let i = 0; i < 3; i += 1) {{
         const card = document.createElement('div');
@@ -347,17 +421,24 @@ def generate_static_site(root: Path, output_dir: Path) -> Path:
         `;
         expBlock.appendChild(card);
 
-        for (const line of starters) {{
-          const chip = document.createElement('button');
-          chip.type = 'button';
-          chip.className = 'secondary chip';
-          chip.textContent = line;
-          chip.addEventListener('click', () => {{
-            const bulletField = document.getElementById(`bullets${{i}}`);
-            bulletField.value = bulletField.value ? `${{bulletField.value}}\\n${{line}}` : line;
-            renderResumePreview();
-          }});
-          card.querySelector(`#chips${{i}}`).appendChild(chip);
+        const chipsContainer = card.querySelector(`#chips${{i}}`);
+        for (const [group, lines] of Object.entries(groupedStarters)) {{
+          const heading = document.createElement('p');
+          heading.className = 'group-title';
+          heading.textContent = group;
+          chipsContainer.appendChild(heading);
+          for (const line of lines) {{
+            const chip = document.createElement('button');
+            chip.type = 'button';
+            chip.className = 'secondary chip';
+            chip.textContent = line;
+            chip.addEventListener('click', () => {{
+              const bulletField = document.getElementById(`bullets${{i}}`);
+              bulletField.value = bulletField.value ? `${{bulletField.value}}\\n${{line}}` : line;
+              renderResumePreview();
+            }});
+            chipsContainer.appendChild(chip);
+          }}
         }}
 
         for (const field of card.querySelectorAll('input, textarea')) {{
@@ -368,6 +449,59 @@ def generate_static_site(root: Path, output_dir: Path) -> Path:
 
     function asListLines(value) {{
       return value.split('\\n').map((line) => line.trim()).filter(Boolean);
+    }}
+
+    function getResumeMissingCoreFields() {{
+      const missing = [];
+      const name = document.getElementById('fullName').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const education = document.getElementById('education').value.trim();
+
+      let skillCount = 0;
+      for (let i = 1; i <= 5; i += 1) {{
+        if (document.getElementById(`skill${{i}}`).value.trim()) skillCount += 1;
+      }}
+
+      let experienceCount = 0;
+      for (let i = 0; i < 3; i += 1) {{
+        const jobTitle = document.getElementById(`jobTitle${{i}}`).value.trim();
+        const company = document.getElementById(`company${{i}}`).value.trim();
+        const jobLocation = document.getElementById(`jobLocation${{i}}`).value.trim();
+        const bullets = asListLines(document.getElementById(`bullets${{i}}`).value);
+        if (jobTitle || company || jobLocation || bullets.length > 0) {{
+          experienceCount += 1;
+        }}
+      }}
+
+      if (!name) missing.push('Add your full name.');
+      if (!phone && !email) missing.push('Add a phone number or email.');
+      if (skillCount < 3) missing.push('Add at least 3 skills.');
+      if (experienceCount < 1) missing.push('Add at least 1 experience entry.');
+      if (!education) missing.push('Add education details.');
+
+      return missing;
+    }}
+
+    function updateResumeWarning() {{
+      if (!exportAttempted) {{
+        resumeWarning.hidden = true;
+        resumeWarning.innerHTML = '';
+        return;
+      }}
+
+      const missing = getResumeMissingCoreFields();
+      if (missing.length === 0) {{
+        resumeWarning.hidden = true;
+        resumeWarning.innerHTML = '';
+        return;
+      }}
+
+      resumeWarning.hidden = false;
+      resumeWarning.innerHTML = `
+        <p>Please add these before exporting:</p>
+        <ul>${{missing.map((item) => `<li>${{item}}</li>`).join('')}}</ul>
+      `;
     }}
 
     function renderResumePreview() {{
@@ -421,9 +555,17 @@ def generate_static_site(root: Path, output_dir: Path) -> Path:
           <p>${{education || 'School — Credential, Year, City, State'}}</p>
         </div>
       `;
+      updateResumeWarning();
     }}
 
-    document.getElementById('printBtn').addEventListener('click', () => window.print());
+    document.getElementById('printBtn').addEventListener('click', () => {{
+      exportAttempted = true;
+      const missing = getResumeMissingCoreFields();
+      updateResumeWarning();
+      if (missing.length === 0) {{
+        window.print();
+      }}
+    }});
     for (const id of ['fullName', 'phone', 'email', 'cityState', 'education']) {{
       document.getElementById(id).addEventListener('input', renderResumePreview);
     }}

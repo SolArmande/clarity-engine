@@ -23,17 +23,18 @@ You complete a one-page resume directly in the web flow and save it as a PDF fro
 4. Enter your phone number.
 5. Enter your email address.
 6. Enter your city and state.
-7. Enter at least 3 and up to 5 skills in the Skills fields.
+7. Enter at least 3 and up to 5 skills in the Skills fields, or tap suggested skills to fill empty skill slots.
 8. Add your first experience entry with job title, company and dates, city/state, and at least one bullet point.
-9. Use preset bullet starter lines when useful, then edit them to match your work.
+9. Use grouped preset bullet starter lines when useful, then edit them to match your work.
 10. Add up to 2 more experience entries if they strengthen your resume.
 11. Enter your education details.
 12. Review the live resume preview on the same page.
 13. Confirm the preview is readable and one-page oriented.
 14. Tap or click the Print / Save as PDF button.
-15. In the browser print dialog, select Save as PDF or Print.
-16. On mobile, use your browser Share or Print action if needed to reach Save as PDF.
-17. Save the file with a clear name such as FirstName_LastName_Resume.pdf.
+15. If required core fields are missing, review the inline warning list above the builder and complete those fields.
+16. In the browser print dialog, select Save as PDF or Print.
+17. On mobile, use your browser Share or Print action if needed to reach Save as PDF.
+18. Save the file with a clear name such as FirstName_LastName_Resume.pdf.
 
 ## DECISIONS
 
